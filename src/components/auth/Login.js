@@ -4,29 +4,37 @@ import styles from '../../styles/auth.module.css';
 import Axios from 'axios';
 import UserContext from '../../context/UserContext';
 import ErrorNotice from '../misc/ErrorNotice'
+import {BACKEND_URL as url} from '../../pathVariables'
 export default function Login() {
     const [email,setEmail]=useState();
     const [password,setPassword]=useState();
     const {setUserData}=useContext(UserContext);
     const[error,setError]=useState();
+
+    
     const login= async (e)=>{
         e.preventDefault();
         try {
             
             const loginUser={email,password}
-            const loginRes = await Axios.post("http://localhost:3000/users/login",loginUser)
+            const loginRes = await Axios.post(`${url}/users/login`,loginUser)
             setUserData({
                 token:loginRes.data.token,
                 user:loginRes.data.user
             })
             localStorage.setItem("auth-token",loginRes.data.token)
-             history.push("/mainLogged");
-                    
+            if(!loginRes.data.user.adminUser) history.push("/mainLogged");
+            if(loginRes.data.user.adminUser) history.push("/mainAdmin");
+            createEntry();        
         } catch (err) {
             err.response.data.msg && setError(err.response.data.msg)
         }
     
     }
+    const createEntry=()=>{
+
+    }
+
     const history = useHistory();
     const register=()=>{
         history.push("/reg");

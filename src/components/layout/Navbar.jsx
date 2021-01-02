@@ -6,6 +6,7 @@ import UserContext from '../../context/UserContext'
 export default function Navbar() {
     const { userData, setUserData } = useContext(UserContext);
     const history = useHistory();
+    
     const register = () => {
         history.push("/reg")
     }

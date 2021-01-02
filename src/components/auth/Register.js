@@ -3,8 +3,10 @@ import {useHistory} from 'react-router-dom';
 import styles from '../../styles/auth.module.css';
 import Axios from 'axios';
 import UserContext from '../../context/UserContext';
-import ErrorNotice from '../misc/ErrorNotice'
+import ErrorNotice from '../misc/ErrorNotice';
+import {BACKEND_URL as url} from '../../pathVariables';
 export default function Register() {
+
     const[email,setEmail]=useState();
     const[passwordCheck,setpasswordCheck]=useState();
     const[password,setPassword]=useState();
@@ -23,16 +25,14 @@ export default function Register() {
             
             const newUser={email,password,passwordCheck,displayName}
             
-            const pruebaUser={email:"prueba2@gmail.com",password:"password",passwordCheck:"password",displayName:"apodox"}
-            console.log(newUser,pruebaUser)
-            const regRes=await Axios.post(
-                "http://localhost:3000/users/register",
+            await Axios.post(
+                `${url}/users/register`,
                 newUser
                 
             );
-            console.log(regRes)
+            
             const loginRes=await Axios.post(
-                "http://localhost:3000/users/login",
+                `{url}/users/login`,
                 {email,password}
             );
             setUserData({
@@ -40,7 +40,8 @@ export default function Register() {
                 user:loginRes.data.user,
             });
             localStorage.setItem("auth-token",loginRes.data.token)
-            history.push("/mainLogged")
+            if(!loginRes.data.user.adminUser) history.push("/mainLogged");
+            if(loginRes.data.user.adminUser) history.push("/mainAdmin");
 
         } catch (err) {
             err.response.data.msg && setError(err.response.data.msg)
