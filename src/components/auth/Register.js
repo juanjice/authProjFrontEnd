@@ -2,7 +2,7 @@ import React,{useState,useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import styles from '../../styles/auth.module.css';
 import Axios from 'axios';
-import UserContext from '../../context/UserContext';
+import {UserContext} from '../../context/UserProvider';
 import ErrorNotice from '../misc/ErrorNotice';
 import {BACKEND_URL as url} from '../../pathVariables';
 export default function Register() {
@@ -32,7 +32,7 @@ export default function Register() {
             );
             
             const loginRes=await Axios.post(
-                `{url}/users/login`,
+                `${url}/users/login`,
                 {email,password}
             );
             setUserData({
@@ -40,6 +40,7 @@ export default function Register() {
                 user:loginRes.data.user,
             });
             localStorage.setItem("auth-token",loginRes.data.token)
+            console.log(loginRes.data.user.adminUser)
             if(!loginRes.data.user.adminUser) history.push("/mainLogged");
             if(loginRes.data.user.adminUser) history.push("/mainAdmin");
 

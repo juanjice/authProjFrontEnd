@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import {BACKEND_URL as url} from '../../pathVariables'
+
 export const isLogged = async ()=>{
 
     const userData={
@@ -28,7 +29,7 @@ export const isLogged = async ()=>{
         userData.user=usersRes.data
          
     } 
-
+    
     return userData
            
 }

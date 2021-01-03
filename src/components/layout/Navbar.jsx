@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { Link, NavLink, useHistory } from 'react-router-dom';
-import UserContext from '../../context/UserContext'
+import {UserContext} from '../../context/UserProvider'
 
 
 export default function Navbar() {
+    
     const { userData, setUserData } = useContext(UserContext);
     const history = useHistory();
     
@@ -24,7 +25,7 @@ export default function Navbar() {
     return (
 
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-            <Link className="navbar-brand" to="/">Navbar</Link>
+            <Link className="navbar-brand" to="/">Authentication Project</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -39,17 +40,36 @@ export default function Navbar() {
                             exact>
                             Home
                         </NavLink>
+                        
+                        
                     </li>
 
                     {
                         userData.user ? (
                         <>
+                        { userData.user.adminUser && (
+                                    <NavLink className="btn btn-dark  mr-2"
+                            to="/mainAdmin"
+                            exact>
+                            Admin
+
+                            </NavLink>
+                                )}
+                            <NavLink className="btn btn-dark  mr-2"
+                            to="/mainLogged"
+                            exact>
+                            Dashboard
+
+                            </NavLink>
+
                             <li className="nav-item">
-                            <button className="btn btn-dark mr-2" onClick={logOut} >Log Out</button>
+                            <button className="btn btn-danger mr-2" onClick={logOut} >Log Out</button>
                             </li>
                         </>)
                              :(
-                            <>
+                                <>
+                               
+                            
                             <li className="nav-item ">
                             <button className="btn btn-dark mr-2" onClick={login} >Log in</button>
                             </li>

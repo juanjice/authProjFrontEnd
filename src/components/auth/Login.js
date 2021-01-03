@@ -2,15 +2,15 @@ import React,{useState,useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import styles from '../../styles/auth.module.css';
 import Axios from 'axios';
-import UserContext from '../../context/UserContext';
+import {UserContext} from '../../context/UserProvider';
 import ErrorNotice from '../misc/ErrorNotice'
 import {BACKEND_URL as url} from '../../pathVariables'
 export default function Login() {
     const [email,setEmail]=useState();
     const [password,setPassword]=useState();
     const {setUserData}=useContext(UserContext);
-    const[error,setError]=useState();
-
+    const[error,setError]=useState();    
+   
     
     const login= async (e)=>{
         e.preventDefault();
